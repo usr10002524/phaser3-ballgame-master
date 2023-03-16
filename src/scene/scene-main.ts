@@ -26,9 +26,10 @@ import { BehaviorTimeup } from "../behavior/behavior-timeup";
 import { getStageConfig, getStageCount, getTilemapConfig, StageConfig } from "../objects/stage/stage";
 import { Timer } from "../service/timer";
 import { BehaviorTimeAttackClear } from "../behavior/behavior-timeattack-clear";
-import { atsumaru_getVolume, atsumaru_onChangeVolume, atsumaru_setScreenshoScene } from "../atsumaru/atsumaru";
+import { atsumaru_getVolume, atsumaru_isValid, atsumaru_onChangeVolume, atsumaru_setScreenshoScene } from "../atsumaru/atsumaru";
 import { BehaviorScoreBoard } from "../behavior/behavior-scoreboard";
 import { BehaviorReturnTile } from "../behavior/behavior-returntitle";
+import { SoundVolume, SoundVolumeConfig } from "../common/sound-volume";
 
 //ステップ
 const Step = {
@@ -104,6 +105,7 @@ export class SceneMain extends Phaser.Scene {
     //サウンド関連
     private bgmName: string;
     private bgm: Phaser.Sound.BaseSound | null;
+    private soundVolume: SoundVolume | null;
 
     //ステージ設定
     private stageConfig: StageConfig | null;
@@ -146,6 +148,7 @@ export class SceneMain extends Phaser.Scene {
 
         this.bgmName = '';
         this.bgm = null;
+        this.soundVolume = null;
 
         this.stageConfig = null;
     }
@@ -523,15 +526,100 @@ export class SceneMain extends Phaser.Scene {
 
 
     private _initVolume(): void {
-        //現在のボリュームを取得し設定
-        const volume = atsumaru_getVolume();
-        if (volume) {
-            this.sound.volume = volume;
+        if (atsumaru_isValid()) {
+            //現在のボリュームを取得し設定
+            const volume = atsumaru_getVolume();
+            if (volume) {
+                this.sound.volume = volume;
+            }
+            //ボリュームが変わったときのコールバックを設定
+            atsumaru_onChangeVolume((volume: number) => {
+                this.sound.volume = volume;
+            });
         }
-        //ボリュームが変わったときのコールバックを設定
-        atsumaru_onChangeVolume((volume: number) => {
-            this.sound.volume = volume;
-        });
+        else {
+            this._createSoundVolume();
+        }
+    }
+
+    private _createSoundVolume(): void {
+        const config: SoundVolumeConfig = {
+            pos: {
+                x: Consts.SoundVolume.Base.Pos.X,
+                y: Consts.SoundVolume.Base.Pos.Y,
+            },
+            depth: Consts.SoundVolume.Panel.DEPTH,
+
+            icon: {
+                atlas: Assets.Graphic.SoundIcons.Atlas.NAME,
+                frame: {
+                    volume: Assets.Graphic.SoundIcons.Volume.ON,
+                    mute: Assets.Graphic.SoundIcons.Mute.ON,
+                },
+                pos: {
+                    x: Consts.SoundVolume.Icon.Pos.X,
+                    y: Consts.SoundVolume.Icon.Pos.Y,
+                },
+                scale: {
+                    x: Consts.SoundVolume.Icon.Scale.X,
+                    y: Consts.SoundVolume.Icon.Scale.Y,
+                },
+                depth: Consts.SoundVolume.Icon.DEPTH,
+            },
+
+            guage: {
+                pos: {
+                    x: Consts.SoundVolume.Guage.Pos.X,
+                    y: Consts.SoundVolume.Guage.Pos.Y,
+                },
+                size: {
+                    w: Consts.SoundVolume.Guage.Size.W,
+                    h: Consts.SoundVolume.Guage.Size.H,
+                },
+                color: {
+                    normal: Consts.SoundVolume.Guage.Color.NORMAL,
+                    disabled: Consts.SoundVolume.Guage.Color.DISABLED,
+                    bg: Consts.SoundVolume.GuageBg.COLOR,
+                },
+                depth: {
+                    bar: Consts.SoundVolume.Guage.DEPTH,
+                    bg: Consts.SoundVolume.GuageBg.DEPTH,
+                }
+
+            },
+
+            handle: {
+                size: {
+                    w: Consts.SoundVolume.Handle.Size.W,
+                    h: Consts.SoundVolume.Handle.Size.H,
+                },
+                color: {
+                    normal: Consts.SoundVolume.Handle.Color.NORMAL,
+                    disabled: Consts.SoundVolume.Handle.Color.DISABLED,
+                    grabed: Consts.SoundVolume.Handle.Color.GRABED,
+                },
+                depth: Consts.SoundVolume.Handle.DEPTH,
+            },
+
+            panel: {
+                pos: {
+                    x: Consts.SoundVolume.Panel.Pos.X,
+                    y: Consts.SoundVolume.Panel.Pos.Y,
+                },
+                size: {
+                    w: Consts.SoundVolume.Panel.Size.W,
+                    h: Consts.SoundVolume.Panel.Size.H,
+                },
+                color: {
+                    normal: Consts.SoundVolume.Panel.COLOR,
+                },
+                alpha: {
+                    normal: Consts.SoundVolume.Panel.ALPHA,
+                },
+                depth: Consts.SoundVolume.Panel.DEPTH,
+            },
+        }
+        this.soundVolume = new SoundVolume(this, config);
     }
 
     private _initStage(): void {

@@ -247,6 +247,77 @@ export const Consts = {
             DEPTH: 3,
         },
     },
+
+    //ボリューム表示
+    SoundVolume: {
+        Base: {
+            Pos: {
+                X: 732,
+                Y: 560,
+            },
+        },
+        Icon: {
+            Pos: {
+                X: -40,
+                Y: 0,
+            },
+            Scale: {
+                X: 0.6,
+                Y: 0.6,
+            },
+            DEPTH: 2,
+        },
+        Handle: {
+            Size: {
+                W: 10,
+                H: 25,
+            },
+            Color: {
+                NORMAL: 0xF0F0F0,
+                DISABLED: 0x808080,
+                GRABED: 0xA0A0A0,
+            },
+            DEPTH: 4,
+        },
+        Guage: {
+            Pos: {
+                X: -24,
+                Y: 0,
+            },
+            Size: {
+                W: 72,
+                H: 10,
+            },
+            Color: {
+                NORMAL: 0xFFFFFF,
+                DISABLED: 0x808080,
+            },
+            DEPTH: 3,
+        },
+        GuageBg: {
+            COLOR: 0x000000,
+            DEPTH: 2,
+        },
+        Panel: {
+            Pos: {
+                X: -58,
+                Y: 0,
+            },
+            Size: {
+                W: 116,
+                H: 40,
+            },
+            COLOR: 0x404040,
+            ALPHA: 0.5,
+            DEPTH: 1,
+        },
+    },
+
+    // 言語
+    Localizable: {
+        ENGLISH: 1,
+        JAPANEASE: 2,
+    },
 }
 
 export const Assets = {
@@ -322,6 +393,26 @@ export const Assets = {
             FILE: 'image/title_bg.png',
         },
 
+        // サウンドボリューム
+        SoundIcons: {
+            Atlas: {
+                NAME: "sound_icons",
+                FILE: "image/sound_icons.png",
+                ATLAS: "image/sound_icons_atlas.json",
+            },
+
+            Volume: {
+                ON: "sound_w",
+                OFF: "sound_w",
+                GRAY: "sound_g",
+            },
+            Mute: {
+                ON: "mute_w",
+                OFF: "mute_w",
+                GRAY: "mute_g",
+            },
+        },
+
         GameBGs: [
             { KEY: 'gamebg01', FILE: 'image/gamebg01.png' },
             { KEY: 'gamebg02', FILE: 'image/gamebg02.png' },
@@ -387,4 +478,17 @@ export const Assets = {
         { KEY: 'stage06', FILE: 'map/pac06.json', TILESET: 'tiles', BASELAYER: 'map', TRANSLAYER: 'trans', },
         { KEY: 'stage07', FILE: 'map/pac07.json', TILESET: 'tiles', BASELAYER: 'map', TRANSLAYER: 'trans', },
     ],
+
+    //言語
+    Localizable: {
+        KEY: "localizable",
+        File: {
+            ENGLISH: "",
+            JAPANEASE: "",
+            DEFAULT: "",
+        },
+
+        Sentence: {
+        },
+    },
 }

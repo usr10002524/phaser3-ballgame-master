@@ -24,6 +24,7 @@ export class SceneLoading extends Phaser.Scene {
         for (let i = 0; i < Assets.Graphic.GameBGs.length; i++) {
             this.load.image(Assets.Graphic.GameBGs[i].KEY, Assets.Graphic.GameBGs[i].FILE);
         }
+        this.load.atlas(Assets.Graphic.SoundIcons.Atlas.NAME, Assets.Graphic.SoundIcons.Atlas.FILE, Assets.Graphic.SoundIcons.Atlas.ATLAS);
 
         //オーディオ
         for (let i = 0; i < Assets.Audio.SEs.length; i++) {
