@@ -2,8 +2,8 @@
  * 各種定数
  */
 export const Consts = {
-    TITLE: "SPHERE DECIDE",
-    VERSION: "202212161802",
+    TITLE: "TAG BALLS",
+    VERSION: "202303171402",
 
     //画面サイズ
     Screen: {
@@ -188,7 +188,7 @@ export const Consts = {
             Frame: {
                 Position: {
                     x: 15,
-                    y: 555,
+                    y: 530,
                 },
                 Origin: {
                     x: 0,
@@ -199,7 +199,7 @@ export const Consts = {
             Guage: {
                 Position: {
                     x: 20,
-                    y: 560,
+                    y: 535,
                 },
                 Size: {
                     x: 760,
@@ -253,7 +253,7 @@ export const Consts = {
         Base: {
             Pos: {
                 X: 732,
-                Y: 560,
+                Y: 580,
             },
         },
         Icon: {
@@ -378,19 +378,36 @@ export const Assets = {
             RETURN_TITLE: 'returntitle'
         },
 
+        // ニコニコ
+        // TitleUIs: {
+        //     KEY: 'title_uis',
+        //     ATLAS: 'image/title_uis_atlas.json',
+        //     FILE: 'image/title_uis.png',
+
+        //     TITLE: 'title',
+        //     START: 'gamestart',
+        //     TIMEATTACK: 'timeattack',
+        // },
+        // 海外
         TitleUIs: {
             KEY: 'title_uis',
-            ATLAS: 'image/title_uis_atlas.json',
-            FILE: 'image/title_uis.png',
+            ATLAS: 'image2/title_uis_atlas.json',
+            FILE: 'image2/title_uis.png',
 
             TITLE: 'title',
             START: 'gamestart',
             TIMEATTACK: 'timeattack',
         },
 
+        // ニコニコ
+        // TitleBG: {
+        //     KEY: 'title_bg',
+        //     FILE: 'image/title_bg.png',
+        // },
+        // 海外
         TitleBG: {
             KEY: 'title_bg',
-            FILE: 'image/title_bg.png',
+            FILE: 'image2/title_bg.png',
         },
 
         // サウンドボリューム
@@ -413,9 +430,15 @@ export const Assets = {
             },
         },
 
+        // ニコニコ
+        // GameBGs: [
+        //     { KEY: 'gamebg01', FILE: 'image/gamebg01.png' },
+        //     { KEY: 'gamebg02', FILE: 'image/gamebg02.png' },
+        // ],
+        // 海外
         GameBGs: [
-            { KEY: 'gamebg01', FILE: 'image/gamebg01.png' },
-            { KEY: 'gamebg02', FILE: 'image/gamebg02.png' },
+            { KEY: 'gamebg01', FILE: 'image2/gamebg01.png' },
+            { KEY: 'gamebg02', FILE: 'image2/gamebg02.png' },
         ],
     },
 
@@ -434,12 +457,18 @@ export const Assets = {
             { KEY: 'se_01_18', MP3: 'audio/se/se_01_18.mp3', OGG: 'audio/se/se_01_18.ogg' },
             { KEY: 'se_02_10', MP3: 'audio/se/se_02_10.mp3', OGG: 'audio/se/se_02_10.ogg' },
             { KEY: 'se_02_13', MP3: 'audio/se/se_02_13.mp3', OGG: 'audio/se/se_02_13.ogg' },
-            { KEY: 'se_03_02', MP3: 'audio/se/se_03_02.mp3', OGG: 'audio/se/se_03_02.ogg' },
+            // ニコニコ
+            // { KEY: 'se_03_02', MP3: 'audio/se/se_03_02.mp3', OGG: 'audio/se/se_03_02.ogg' },
+            // 海外
+            { KEY: 'se_02_01', MP3: 'audio/se2/se_02_01.mp3', OGG: 'audio/se2/se_02_01.ogg' },
         ],
         SE: {
             SELECT: "se_02_13",
             DECIDE: "se_02_10",
-            BIT: "se_03_02",
+            // ニコニコ
+            // BIT: "se_03_02",
+            // 海外
+            BIT: "se_02_01",
             POWERBIT: "se_01_08",
             POWEREND: "se_01_11",
             WALL: "se_01_03",
