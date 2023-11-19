@@ -4,13 +4,16 @@ import { getVector, normalizeVector, lengthBetweenPoint } from "../../service/ve
 import { SceneMain } from "../../scene/scene-main";
 import { Assets, Consts } from "../../consts";
 
+/**
+ * コンフィグ
+ */
 export type EnemyConfig = {
-    ballConfig: BallConfig
-    speedValue: number;
-    speedMax: number;
-    reduceVerocity: number;
-    spawnStayTime: number;
-    respawnStayTime: number;
+    ballConfig: BallConfig;  // 基底用のコンフィグ
+    speedValue: number; // 初期速度
+    speedMax: number;   // 最大速度
+    reduceVerocity: number; // 加速度減衰率
+    spawnStayTime: number;  // スポーン位置に留まる時間
+    respawnStayTime: number;    // リスポーン時に留まる時間
 }
 
 export class Enemy extends Ball {
@@ -20,6 +23,12 @@ export class Enemy extends Ball {
     private id: number;
     private alreadyEscaped: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param id ID
+     * @param config コンフィグ
+     */
     constructor(scene: SceneMain, id: number, config: EnemyConfig) {
         super(scene, config.ballConfig);
         this.config = config;
@@ -32,10 +41,17 @@ export class Enemy extends Ball {
         this._spawn(this.config.spawnStayTime);
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
         this._updateStat();
     }
 
+    /**
+     * IDを取得する
+     * @returns ID
+     */
     getID(): number {
         const id = this.ball.getData('id');
         if (id != null) {
@@ -46,10 +62,19 @@ export class Enemy extends Ball {
         }
     }
 
+    /**
+     * 状態を取得する
+     * @returns 状態
+     */
     getStat(): number {
         return this.stat;
     }
 
+    /**
+     * 加速度を更新する
+     * @param target 目標位置
+     * @param move 移動しているか
+     */
     updateVerocity(target: Coord2, move: boolean): void {
 
         if (move) {
@@ -93,10 +118,17 @@ export class Enemy extends Ball {
         this.setVelocity({ x: velocityX, y: velocityY });
     }
 
+    /**
+     * スポーン位置に戻す
+     */
     returnSpawnPosition(): void {
         this._spawn(this.config.respawnStayTime);
     }
 
+    /**
+     * 敵オブジェクトが壁を通過できる状態かチェックする
+     * @returns 壁を通過できる壁を通れる状態であればtrue、そうでなければfalseを返す
+     */
     isThroughTransWall(): boolean {
         switch (this.stat) {
             case Consts.Enemy.Stat.OUT: return true;
@@ -104,7 +136,10 @@ export class Enemy extends Ball {
         return false;
     }
 
-    //プレーヤーとの当たりを取るかどうか
+    /**
+     * プレーヤーとの当たりを取るかどうか
+     * @returns プレーヤーとあたりを取る場合はtrue、そうでない場合はfalseを返す
+     */
     isCollisonForPlayer(): boolean {
         if (this.isAlive()) {
             switch (this.stat) {
@@ -120,7 +155,10 @@ export class Enemy extends Ball {
         }
     }
 
-    //敵同士の当たりを取るかどうか
+    /**
+     * 敵同士の当たりを取るかどうか 
+     * @returns 敵同士であたりを取る場合はtrue、そうでない場合はfalseを返す。
+     */
     isCollisonForEnemy(): boolean {
         switch (this.stat) {
             case Consts.Enemy.Stat.NONE:
@@ -131,7 +169,7 @@ export class Enemy extends Ball {
         return true;    //上記以外は取る
     }
 
-
+    // 敵を出現させる
     private _spawn(stayTime: number): void {
         super.returnSpawnPosition();
 
@@ -144,6 +182,7 @@ export class Enemy extends Ball {
         });
     }
 
+    // リバースギミックが有効かどうか
     private _isReverseActive(): boolean {
         const gimicManager = this.scene.getGimicManager();
         if (gimicManager) {
@@ -152,10 +191,12 @@ export class Enemy extends Ball {
         return false;
     }
 
+    // 敵が逃げ状態か
     private _isEscape(): boolean {
         return (this.stat === Consts.Enemy.Stat.ESCAPE)
     }
 
+    // 状態を更新する
     private _updateStat(): void {
         switch (this.stat) {
             case Consts.Enemy.Stat.OUT: {
@@ -193,6 +234,7 @@ export class Enemy extends Ball {
         }
     }
 
+    // 状態をセットする
     private _setStat(stat: number): void {
         if (this.stat === stat) {
             return; //同じstatなので何もしない
@@ -200,7 +242,7 @@ export class Enemy extends Ball {
 
         this.stat = stat;
 
-
+        // 状態に応じで色を変更
         if (this.stat === Consts.Enemy.Stat.ESCAPE) {
             this.ball.setFrame(Assets.Graphic.Objects.BLUE);
         }
@@ -208,6 +250,7 @@ export class Enemy extends Ball {
             this.ball.setFrame(Assets.Graphic.Objects.RED);
         }
 
+        // 壁を通過できる状態でなければ半透明に
         if (this.stat === Consts.Enemy.Stat.STAY || this.stat === Consts.Enemy.Stat.OUT) {
             this.ball.setAlpha(0.5);
         }
@@ -216,7 +259,7 @@ export class Enemy extends Ball {
         }
 
 
-
+        // 各ステータスに応じてなにかする処理があればここに記述
         switch (this.stat) {
             case Consts.Enemy.Stat.NORMAL: {
                 break;
@@ -243,6 +286,7 @@ export class Enemy extends Ball {
         }
     }
 
+    // 現在乗っているタイルが指定したものと同じかチェック
     private _checkCurrentTile(index: number): boolean {
         const tile = this._getCurrentTile();
         if (tile) {
@@ -253,6 +297,7 @@ export class Enemy extends Ball {
         return false;
     }
 
+    // 現在乗っているタイルを取得
     private _getCurrentTile(): Phaser.Tilemaps.Tile | null {
         const tileMap = this.scene.getTimeMap();
         const baseLayerName = this.scene.getBaseLayerName();

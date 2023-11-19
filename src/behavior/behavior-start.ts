@@ -2,6 +2,9 @@ import { Assets, Consts } from "../consts";
 import { SceneMain } from "../scene/scene-main";
 import { Behavior } from "./behavior";
 
+/**
+ * ゲーム開始演出
+ */
 export class BehaviorStart extends Behavior {
 
     private scene: SceneMain;
@@ -10,6 +13,10 @@ export class BehaviorStart extends Behavior {
     private tween: Phaser.Tweens.Tween | null;
     private finished: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     */
     constructor(scene: SceneMain) {
         super('BehaviorStart');
         this.scene = scene;
@@ -46,13 +53,22 @@ export class BehaviorStart extends Behavior {
     }
 
     //extends Behavior
+    /**
+     * 初期化処理
+     */
     initialize(): void {
         this._readyInStart();
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
     }
 
+    /**
+     * 終了処理
+     */
     finalize(): void {
         if (this.tween != null) {
             this.tween.remove();
@@ -61,11 +77,15 @@ export class BehaviorStart extends Behavior {
         this.start.destroy();
     }
 
+    /**
+     * ビヘイビア終了したかどうかを返す。
+     * @returns 終了していた場合は true、そうでない場合はfalseを返す。
+     */
     isFinished(): boolean {
         return this.finished;
     }
 
-
+    // 「Ready」の表示開始を行う
     private _readyInStart(): void {
         const start = -this.ready.height;
         const end = this.ready.y;
@@ -89,6 +109,7 @@ export class BehaviorStart extends Behavior {
         });
     }
 
+    // 「Ready」の表示終了を行う
     private _readyOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -106,6 +127,7 @@ export class BehaviorStart extends Behavior {
         });
     }
 
+    // 「Start」の表示開始を行う
     private _startInStart(): void {
         const start = 0.5;
         const end = 1;
@@ -130,6 +152,7 @@ export class BehaviorStart extends Behavior {
         })
     }
 
+    // 「Start」の表示終了を行う
     private _startOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -146,6 +169,8 @@ export class BehaviorStart extends Behavior {
             onCompleteScope: this,
         });
     }
+
+    // 演出が全て終了した際の処理
     private _onEnd(): void {
         this.finished = true;
     }

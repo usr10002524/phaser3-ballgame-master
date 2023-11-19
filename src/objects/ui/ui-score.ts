@@ -2,14 +2,20 @@ import { Consts } from "../../consts";
 import { Globals } from "../../globals";
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type uiScoreConfig = {
     text: {
-        position: Coord2;
-        origin: Coord2;
-        depth: number;
+        position: Coord2;   // 表示位置
+        origin: Coord2;     // 中心座標(0-1)
+        depth: number;      // 表示優先順位
     },
 }
 
+/**
+ * インクリメントクラス
+ */
 class IncrementTimer {
     scene: Phaser.Scene;
     start: number;
@@ -17,6 +23,13 @@ class IncrementTimer {
     delay: number;
     incTimer: Phaser.Time.TimerEvent;
 
+    /**
+     * 
+     * @param scene シーン
+     * @param start 初期値
+     * @param end 最終値
+     * @param delay 要する時間
+     */
     constructor(scene: Phaser.Scene, start: number, end: number, delay: number) {
         this.scene = scene;
         this.start = start;
@@ -26,18 +39,35 @@ class IncrementTimer {
         this.incTimer = scene.time.addEvent({ delay: delay });
     }
 
+    /**
+     * オブジェクトを破棄する
+     */
     destroy(): void {
         if (this.incTimer) {
             this.incTimer.remove();
         }
     }
 
+    /**
+     * 開始値を取得
+     * @returns 開始値
+     */
     getStart(): number {
         return this.start;
     }
+
+    /**
+     * 終了地を取得
+     * @returns 終了値
+     */
     getEnd(): number {
         return this.end;
     }
+
+    /**
+     * 現在値を取得
+     * @returns 現在
+     */
     getCur(): number {
         const progress = this.incTimer.getProgress();
         const cur = Math.floor(this.start + (this.end - this.start) * progress);
@@ -46,6 +76,9 @@ class IncrementTimer {
 
 }
 
+/**
+ * スコアクラス
+ */
 export class uiScore {
 
     private scene: Phaser.Scene;
@@ -55,7 +88,11 @@ export class uiScore {
     private text: Phaser.GameObjects.Text;
     private incTimer: IncrementTimer | null;
 
-
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: uiScoreConfig) {
         this.scene = scene;
         this.config = config;
@@ -78,6 +115,9 @@ export class uiScore {
         this._setText(this.score);
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
 
         //スコアが加算されたらインクリメントを行う
@@ -108,11 +148,13 @@ export class uiScore {
         }
     }
 
+    // 表示スコアを設定
     private _setText(score: number) {
         this.text.setText(`SCORE:${score}`);
         this.lastScore = score;
     }
 
+    // 遅延タイマーを取得
     private _getDelay(value: number) {
         if (value <= Consts.UI.Score.Threshold.Small.VALUE) {
             return Consts.UI.Score.Threshold.Small.DELAY;

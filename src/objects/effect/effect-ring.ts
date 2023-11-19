@@ -10,13 +10,13 @@ import { Consts } from "../../consts";
  * リングエフェクトの設定
  */
 export type EffectConfig = {
-    key: string;
-    frame: string;
-    depth: number;
-    duration: number;   //遷移時間(ms)
-    loopDelay: number;  //ループ終了後、次の再生までの時間(ms)
-    count: number;      //何個エフェクトを再生するか
-    span: number;       //エフェクト間の再生間隔
+    key: string;        // Atlusファイルのキー
+    frame: string;      // フレーム名
+    depth: number;      // 表示優先度
+    duration: number;   // 遷移時間(ms)
+    loopDelay: number;  // ループ終了後、次の再生までの時間(ms)
+    count: number;      // 何個エフェクトを再生するか
+    span: number;       // エフェクト間の再生間隔
 }
 
 /**
@@ -31,6 +31,11 @@ export abstract class EffectRing {
     protected resumeIndex;
     protected visibled: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: EffectConfig) {
         this.scene = scene;
         this.config = config;
@@ -55,6 +60,9 @@ export abstract class EffectRing {
         this._resumeEffect();
     }
 
+    /**
+     * オブジェクト破棄する
+     */
     destory(): void {
         this.ring.forEach(ring => {
             ring.destroy();
@@ -65,7 +73,10 @@ export abstract class EffectRing {
         this.resumeTimer?.remove();
     }
 
-    //表示/非表示設定
+    /**
+     * 表示/非表示設定
+     * @param flag true:表示する、false:非表示
+     */
     setVisible(flag: boolean): void {
         if (this.visibled !== flag) {
             this.visibled = flag;
@@ -75,13 +86,18 @@ export abstract class EffectRing {
         }
     }
 
-    //表示位置設定
+    /**
+     * 表示位置を設定する
+     * @param x X座標
+     * @param y Y座標
+     */
     setPosition(x: number, y: number): void {
         for (let i = 0; i < this.ring.length; i++) {
             this.ring[i].setPosition(x, y);
         }
     }
 
+    // エフェクトを再開する
     protected _resumeEffect(): void {
         if (this.resumeIndex >= this.tween.length) {
             return; //何もしない
@@ -99,6 +115,7 @@ export abstract class EffectRing {
         }
     }
 
+    // タイマーを初期化
     protected _initTimer(): void {
         this.resumeTimer = this.scene.time.addEvent({
             delay: this.config.span,
@@ -107,6 +124,7 @@ export abstract class EffectRing {
         });
     }
 
+    // タイマーを開始
     protected _startTimer(): void {
         if (this.resumeTimer === null) {
             this._initTimer()
@@ -117,12 +135,15 @@ export abstract class EffectRing {
         }
     }
 
+    // タイマーを停止する
     protected _stopTimer(): void {
         if (this.resumeTimer !== null) {
             this.resumeTimer.paused = true;
         }
     }
 
+    // イメージを作成する
     protected abstract _createImage(): Phaser.GameObjects.Image;
+    // tween を作成する
     protected abstract _createTween(parent: Phaser.GameObjects.Image): Phaser.Tweens.Tween;
 }

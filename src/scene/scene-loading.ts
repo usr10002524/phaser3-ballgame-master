@@ -1,17 +1,26 @@
 import { Assets, Consts } from "../consts";
 
+/**
+ * ローディングシーン
+ */
 export class SceneLoading extends Phaser.Scene {
 
     private text: Phaser.GameObjects.Text | null;
 
+    /**
+     * コンストラクタ
+     */
     constructor() {
         super({ key: "Loading" });
 
         this.text = null;
     }
 
+    /**
+     * 事前ロード
+     */
     preload() {
-        //TODO ここでアセットを読み込む
+        // ここでアセットを読み込む
         this.load.setBaseURL(Assets.BASE);
 
         //グラフィック
@@ -63,6 +72,9 @@ export class SceneLoading extends Phaser.Scene {
         }, this);
     }
 
+    /**
+     * 初期化
+     */
     create() {
         this.scene.start("Title");
         // this.scene.start("SoundTest");

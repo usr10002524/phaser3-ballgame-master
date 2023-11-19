@@ -1,33 +1,45 @@
 import { Globals } from "../../globals";
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type uiTimerGuageConfig = {
     frame: {
-        key: string;
-        frame: string;
-        position: Coord2;
-        origin: Coord2;
-        depth: number;
+        key: string;    // ファイルのキー
+        frame: string;  // 表示フレーム
+        position: Coord2;   // 表示位置
+        origin: Coord2; // 中心座標(0-1)
+        depth: number;  // 表示優先順位
     },
     guage: {
-        position: Coord2;
-        size: Coord2;
-        origin: Coord2;
-        depth: number;
+        position: Coord2;   // 表示位置
+        size: Coord2;   // 表示サイズ
+        origin: Coord2; // 中心座標(0-1)
+        depth: number;  // 表示優先順位
     }
 }
 
+/**
+ * ゲージの状態
+ */
 const GuageStat = {
-    NORMAL: 0,
-    NOTICE: 1,
-    WARN: 2,
+    NORMAL: 0,  // 通常
+    NOTICE: 1,  // 注意
+    WARN: 2,    // 警告
 }
+/**
+ * ゲージ状態のしきい値
+ */
 const GuageStatThreshold = {
     NORMAL: 0,
     NOTICE: 0.2,
     WARN: 0.1,
 }
 
+/**
+ * ゲージUIクラス
+ */
 export class uiTimerGuage {
 
     private scene: Phaser.Scene;
@@ -42,6 +54,11 @@ export class uiTimerGuage {
     private static noticeColor = 0xFFFF00;
     private static warnColor = 0xFF0000;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: uiTimerGuageConfig) {
         this.scene = scene;
         this.config = config;
@@ -66,6 +83,9 @@ export class uiTimerGuage {
         this.stat = GuageStat.NORMAL;
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
         const percent = Globals.get().getRemainPercent();
         const w = this.config.guage.size.x * percent;
@@ -84,6 +104,7 @@ export class uiTimerGuage {
         }
     }
 
+    // ゲージ状態を取得する
     private _getStat(percent: number) {
         if (percent < GuageStatThreshold.WARN) {
             return GuageStat.WARN;

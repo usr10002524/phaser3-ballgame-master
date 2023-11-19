@@ -4,6 +4,9 @@ import { Globals } from "../globals";
 import { SceneMain } from "../scene/scene-main";
 import { Behavior } from "./behavior";
 
+/**
+ * タイムアタック時のタイムアップ演出
+ */
 export class BehaviorTimeup extends Behavior {
 
     private scene: SceneMain;
@@ -13,6 +16,10 @@ export class BehaviorTimeup extends Behavior {
     private spacer: Phaser.Time.TimerEvent | null;
     private finished: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     */
     constructor(scene: SceneMain) {
         super('BehaviorTimeup');
         this.scene = scene;
@@ -42,13 +49,22 @@ export class BehaviorTimeup extends Behavior {
     }
 
     //extends Behavior
+    /**
+     * 初期化処理
+     */
     initialize(): void {
         this._timeupInStart();
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
     }
 
+    /**
+     * 終了処理
+     */
     finalize(): void {
         if (this.tween != null) {
             this.tween.remove();
@@ -56,11 +72,15 @@ export class BehaviorTimeup extends Behavior {
         this.timeup.destroy();
     }
 
+    /**
+     * ビヘイビア終了したかどうかを返す。
+     * @returns 終了していた場合は true、そうでない場合はfalseを返す。
+     */
     isFinished(): boolean {
         return this.finished;
     }
 
-
+    // 「Timej up」の表示開始を行う
     private _timeupInStart(): void {
         const start = 0.5;
         const end = 1.0;
@@ -91,6 +111,7 @@ export class BehaviorTimeup extends Behavior {
         });
     }
 
+    // 「Timej up」の表示終了を行う
     private _timeupOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -114,6 +135,7 @@ export class BehaviorTimeup extends Behavior {
         });
     }
 
+    // 演出が全て終了した際の処理
     private _onEnd(): void {
         this.scene.onDisplayScoreBoard();
         this.finished = true;

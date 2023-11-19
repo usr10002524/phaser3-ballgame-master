@@ -5,6 +5,9 @@ type keySet = {
     name: string;
 }
 
+/**
+ * サウンドテストシーン（デバッグ用）
+ */
 export class SceneSoundTest extends Phaser.Scene {
 
     private bgms: keySet[];

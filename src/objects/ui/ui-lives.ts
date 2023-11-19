@@ -2,20 +2,26 @@ import { Assets, Consts } from "../../consts";
 import { Globals } from "../../globals";
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type uiLivesConfig = {
     ball: {
-        position: Coord2;
-        origin: Coord2;
-        scale: Coord2;
-        depth: number;
+        position: Coord2;   // 表示位置
+        origin: Coord2;     // 中心座標(0-1)
+        scale: Coord2;      // スケーリング
+        depth: number;      // 表示優先順位
     },
     text: {
-        position: Coord2;
-        origin: Coord2;
-        depth: number;
+        position: Coord2;   // 表示位置
+        origin: Coord2;     // 中心座標(0-1)
+        depth: number;      // 表示優先順位
     },
 }
 
+/**
+ * 残機数UIクラス
+ */
 export class uiLives {
     private scene: Phaser.Scene;
     private config: uiLivesConfig;
@@ -23,6 +29,11 @@ export class uiLives {
     private text: Phaser.GameObjects.Text;
     private image: Phaser.GameObjects.Image;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: uiLivesConfig) {
         this.scene = scene;
         this.config = config;
@@ -47,7 +58,11 @@ export class uiLives {
         this._setText(this.lives);
     }
 
+    /**
+     * 表示更新
+     */
     update(): void {
+        // 残機が変更されていれば表示を更新する
         const lives = Globals.get().getLife();
         if (this.lives !== lives) {
             this.lives = lives;
@@ -55,7 +70,10 @@ export class uiLives {
         }
     }
 
-
+    /**
+     * 残機数の表示を更新する
+     * @param lives 残機数
+     */
     private _setText(lives: number) {
         this.text.setText(`x ${lives}`);
     }

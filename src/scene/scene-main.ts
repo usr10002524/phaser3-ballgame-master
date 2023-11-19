@@ -70,7 +70,9 @@ const Step = {
     END: 100,
 }
 
-
+/**
+ * メインシーン
+ */
 export class SceneMain extends Phaser.Scene {
 
     private tilemap: Tilemap | null;
@@ -113,6 +115,9 @@ export class SceneMain extends Phaser.Scene {
     //for debug
     private keyClear: Phaser.Input.Keyboard.Key | null;
 
+    /**
+     * コンストラクタ
+     */
     constructor() {
         super({ key: "Main" });
 
@@ -153,6 +158,9 @@ export class SceneMain extends Phaser.Scene {
         this.stageConfig = null;
     }
 
+    /**
+     * 初期化
+     */
     create(): void {
         //ボリューム初期化
         this._initVolume();
@@ -177,6 +185,11 @@ export class SceneMain extends Phaser.Scene {
         atsumaru_setScreenshoScene(this);
     }
 
+    /**
+     * 更新処理
+     * @param time 経過時間
+     * @param delta 全フレームからの差分時間
+     */
     update(time: number, delta: number): void {
         Globals.get().update(delta);
         this.enemySpawnTimer.update(delta);
@@ -255,22 +268,41 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    /**
+     * ギミックマネージャを取得
+     * @returns ギミックマネージャ
+     */
     getGimicManager(): GimicManager | null {
         return this.gimicManager;
     }
 
+    /**
+     * タイルマップを取得する
+     * @returns タイルマップ
+     */
     getTimeMap(): Tilemap | null {
         return this.tilemap;
     }
 
+    /**
+     * ベースレイヤー名を取得する
+     * @returns ベースレイヤー名
+     */
     getBaseLayerName(): string {
         return this.baseLayerName;
     }
+
+    /**
+     * 透過レイヤー名を取得する
+     * @returns 透過レイヤー名
+     */
     getTransLayerName(): string {
         return this.transLayerName;
     }
 
-    //プレー開始トリガー
+    /**
+     * プレー開始トリガー
+     */
     onPlay(): void {
         //プレー開始待ち状態ならプレー開始状態に遷移させる
         if (this.step === Step.READY_WAIT) {
@@ -283,14 +315,18 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
-    //リスタートトリガー
+    /**
+     * リスタートトリガー
+     */
     onRestart(): void {
         if (this.step === Step.RESTART) {
             this.step = Step.INIT;
         }
     }
 
-    //次のステージへ
+    /**
+     * 次のステージへ
+     */
     onNextStage(): void {
         //次のステージへ
         if (this.step === Step.NEXTSTAGE) {
@@ -300,14 +336,18 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
-    //スコアボード表示へ
+    /**
+     * スコアボード表示へ
+     */
     onDisplayScoreBoard(): void {
         if (this.step === Step.RESULT) {
             this.step = Step.SCOREBOARD;
         }
     }
 
-    //ゲーム終了へ
+    /**
+     * ゲーム終了へ
+     */
     onGameEnd(): void {
         if (this.step === Step.END) {
             //タイトルに戻る
@@ -315,7 +355,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
-
+    // 初期化ステップ
     private _stepInit(): void {
         this.missed = false;
         this.scoreRate = 1;
@@ -325,11 +365,13 @@ export class SceneMain extends Phaser.Scene {
         this._initGimic();
     }
 
+    // プレーヤー初期化
     private _initPlayer(): void {
         //初期位置に戻す
         this.player?.returnSpawnPosition();
     }
 
+    // エネミー初期化
     private _initEnemy(): void {
         //生き残っているものを殺す
         for (let i = 0; i < this.enemies.length; i++) {
@@ -346,10 +388,12 @@ export class SceneMain extends Phaser.Scene {
         this._createEnemies();
     }
 
+    // ギミックの初期化
     private _initGimic(): void {
         this.gimicManager?.clear();
     }
 
+    // ゲーム開始演出ステップ
     private _stepReady(): void {
         this.step = Step.READY_WAIT;
 
@@ -363,6 +407,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // ゲーム中ステップ
     private _stepPlay(): void {
         this._updateStage();
         this._updatePlayer();
@@ -417,6 +462,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // ステージクリアステップ
     private _stepClear(): void {
         Globals.get().pauseTimer();
         //BGM停止
@@ -433,6 +479,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // 全ステージクリアステップ
     private _stepAllClear(): void {
         Globals.get().pauseTimer();
         //BGM停止
@@ -454,6 +501,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // ミスステップ
     private _stepMiss(): void {
         Globals.get().pauseTimer();
         //BGM停止
@@ -470,6 +518,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // ゲームオーバーステップ
     private _stepGameOver(): void {
         Globals.get().pauseTimer();
         //BGM停止
@@ -486,6 +535,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // タイムアップステップ
     private _stepTimeUp(): void {
         Globals.get().pauseTimer();
         //BGM停止
@@ -502,6 +552,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // スコアボード表示ステップ
     private _stepScoreBoard(): void {
         this.step = Step.RETURNTITLE;
 
@@ -511,6 +562,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // タイトルに戻るステップ
     private _stepReturnTitle(): void {
         this.step = Step.END;
 
@@ -524,7 +576,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
-
+    // サウンドボリュームの初期化
     private _initVolume(): void {
         if (atsumaru_isValid()) {
             //現在のボリュームを取得し設定
@@ -542,6 +594,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // サウンドボリュームUIの作成
     private _createSoundVolume(): void {
         const config: SoundVolumeConfig = {
             pos: {
@@ -622,6 +675,7 @@ export class SceneMain extends Phaser.Scene {
         this.soundVolume = new SoundVolume(this, config);
     }
 
+    // ステージの初期化
     private _initStage(): void {
         //ステージ設定を取得
         const stageNo = Globals.get().getStage();
@@ -637,7 +691,7 @@ export class SceneMain extends Phaser.Scene {
         this.enemies = [];
     }
 
-
+    // 背景の作成
     private _createBG(): void {
         const x = this.game.canvas.width * 0.5;
         const y = this.game.canvas.height * 0.5;
@@ -645,6 +699,7 @@ export class SceneMain extends Phaser.Scene {
         this.bg.setDepth(Consts.BG.DEPTH);
     }
 
+    // タイルマップの作成
     private _createTilemap(): void {
         if (this.stageConfig == null) {
             throw new RangeError("_createTilemap");
@@ -685,6 +740,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーの作成
     private _createPlayer(): void {
         //初期位置を取得
         const tiles = this._getTilesFromTileLayer(this.baseLayerName, Consts.Tiles.PLAYER_START);
@@ -729,6 +785,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // エネミーの作成
     private _createEnemies(): void {
 
         if (this.step !== Step.INIT && this.step !== Step.PLAY) {
@@ -792,6 +849,7 @@ export class SceneMain extends Phaser.Scene {
 
     }
 
+    // エフェクトの作成
     private _createEffect(): void {
         const config: EffectConfig = {
             key: Assets.Graphic.Effects.KEY,
@@ -806,14 +864,17 @@ export class SceneMain extends Phaser.Scene {
         this.effect = new EffectRingYellow(this, config);
     }
 
+    // ギミックマネージャの作成
     private _createGmicManager(): void {
         this.gimicManager = new GimicManager();
     }
 
+    // ビヘイビアマネージャの作成
     private _createBehaviorManager(): void {
         this.behaviorManager = new BehaviorManager();
     }
 
+    // ビット（収集アイテム）の作成
     private _createBits(): void {
         const layer = this.tilemap?.getLayer(this.baseLayerName);
         if (layer == null) {
@@ -873,6 +934,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // サウンドの作成
     private _createSound(): void {
 
         this.bgmName = Assets.Audio.BGMs[0].KEY;
@@ -882,18 +944,22 @@ export class SceneMain extends Phaser.Scene {
         this.bgm = this.sound.add(this.bgmName);
     }
 
+    // BGMを再生
     private _playBgm(): void {
         this._stopBgm();
         if (this.bgm != null) {
             this.bgm.play({ loop: true });
         }
     }
+
+    // BGMを停止
     private _stopBgm(): void {
         if (this.bgm != null) {
             this.bgm.stop();
         }
     }
 
+    // UIを作成
     private _createInterface(): void {
         this._createScore();
         this._createLives();
@@ -902,6 +968,7 @@ export class SceneMain extends Phaser.Scene {
         this._createShade();
     }
 
+    // スコアUIを作成
     private _createScore(): void {
         const config: uiScoreConfig = {
             text: {
@@ -913,6 +980,7 @@ export class SceneMain extends Phaser.Scene {
         this.score = new uiScore(this, config);
     }
 
+    // 残機UIを作成
     private _createLives(): void {
         if (Globals.get().getMode() === Consts.Game.Mode.TIMEATTACK) {
             this.lives = null;
@@ -935,6 +1003,7 @@ export class SceneMain extends Phaser.Scene {
         this.lives = new uiLives(this, config);
     }
 
+    // ステージ数UIの作成
     private _createStage(): void {
         const config: uiStageConfig = {
             text: {
@@ -946,6 +1015,7 @@ export class SceneMain extends Phaser.Scene {
         this.stage = new uiStage(this, config);
     }
 
+    // タイマーゲージUIの作成
     private _createTimerGuage(): void {
         if (Globals.get().getMode() === Consts.Game.Mode.NOMAL) {
             this.timerGuage = null;
@@ -970,6 +1040,7 @@ export class SceneMain extends Phaser.Scene {
         this.timerGuage = new uiTimerGuage(this, config);
     }
 
+    // シェードの作成
     private _createShade(): void {
         const config: uiShadeConfig = {
             shade: {
@@ -984,6 +1055,7 @@ export class SceneMain extends Phaser.Scene {
         this.shade = new uiShade(this, config);
     }
 
+    // デバッグ用機能の作成
     private _createDebug(): void {
         // this.debugClear = false;
         // this.keyClear = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO);
@@ -1007,7 +1079,7 @@ export class SceneMain extends Phaser.Scene {
     }
 
 
-
+    // ステージの更新
     private _updateStage(): void {
         //時間を見て敵を発生させる
         if (this.stageConfig != null) {
@@ -1023,6 +1095,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーの更新
     private _updatePlayer(): void {
         const pointer = this._getPointer();
         this.player?.updateVerocity(pointer.position, pointer.isDown);
@@ -1033,6 +1106,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーがマップ内にいるかチェックする
     private _checkPlayerInsideMap(layerName: string): boolean {
         const position = this.player?.getPosition();
         if (position == null) {
@@ -1047,6 +1121,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // エネミーの更新
     private _updateEnemies(): void {
         let move: boolean = false;
         let target: Coord2 = { x: 0, y: 0 };
@@ -1064,6 +1139,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // エフェクトの更新
     private _updateEffect(): void {
         const pointer = this._getPointer();
 
@@ -1076,32 +1152,39 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // ギミックの更新
     private _updateGimics(): void {
         this.gimicManager?.update();
     }
 
+    // UIの更新
     private _updateInterface(): void {
         this._updateScore();
         this._updateLives();
         this._updateTimerGuage();
     }
 
+    // ビヘイビアマップの更新
     private _updateBehaviorManager(): void {
         this.behaviorManager?.update();
     }
 
+    // スコアUIの更新
     private _updateScore(): void {
         this.score?.update();
     }
 
+    // 残機数UIの更新
     private _updateLives(): void {
         this.lives?.update();
     }
 
+    // タイマーゲージの更新
     private _updateTimerGuage(): void {
         this.timerGuage?.update();
     }
 
+    // 当たり判定の更新
     private _updateCollision(): void {
         const player = this.player?.getGameObject();
         //プレーヤーと敵の当たり判定
@@ -1140,6 +1223,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーと敵の当たり判定
     private _hit_Player_Enemy(player: Phaser.GameObjects.GameObject, enemy: Phaser.GameObjects.GameObject) {
         if (this.gimicManager?.isActive(Consts.Gimics.Type.REVERSE)) {
             const id: number = enemy.getData('id');
@@ -1179,6 +1263,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // 敵とゴールの当たり判定
     private _hit_Enemy_Goal(enemy: Phaser.GameObjects.GameObject, tile: Phaser.GameObjects.GameObject) {
         //Phaser.GameObjects.GameObject から Phaser.Tilemaps.Tile に直接キャストできないので unknown を噛ませる必要がある。
         const tmp = tile as unknown;
@@ -1201,6 +1286,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーとギミックの当たり判定
     private _hit_Player_Gimics(player: Phaser.GameObjects.GameObject, tile: Phaser.GameObjects.GameObject) {
         const tmp = tile as unknown;
         const gimic = tmp as Phaser.Tilemaps.Tile;
@@ -1216,6 +1302,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // プレーヤーとビットの当たり判定
     private _hit_Player_Bits(player: Phaser.GameObjects.GameObject, bit: Phaser.GameObjects.GameObject): void {
         bit.destroy();
 
@@ -1228,6 +1315,7 @@ export class SceneMain extends Phaser.Scene {
         //@@@Globals.get().addScore(score);
     }
 
+    // プレーヤーとパワービットの当たり判定
     private _hit_Player_PowerBits(player: Phaser.GameObjects.GameObject, powerBit: Phaser.GameObjects.GameObject): void {
         powerBit.destroy();
 
@@ -1245,6 +1333,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // 敵とタイルの通過判定
     private _process_Eney_Tile(enemy: Phaser.GameObjects.GameObject, tile: Phaser.GameObjects.GameObject): boolean {
         const tmp = tile as unknown;
         const curTile = tmp as Phaser.Tilemaps.Tile;
@@ -1264,6 +1353,7 @@ export class SceneMain extends Phaser.Scene {
         return true;
     }
 
+    // スコアを加算する
     private _addScore(base: number, rate: number): void {
         const score = base * rate;
         if (this.player != null) {
@@ -1314,6 +1404,7 @@ export class SceneMain extends Phaser.Scene {
         Globals.get().addScore(score);
     }
 
+    // 行動反転ギミックの開始
     private _startReverseGimic(ball: Ball) {
         if (this.gimicManager == null) {
             return; //nullなら何もしない
@@ -1353,6 +1444,7 @@ export class SceneMain extends Phaser.Scene {
         this.gimicManager?.add(reverse);
     }
 
+    // マウスポインタを取得
     private _getPointer(): { isDown: boolean, position: Coord2 } {
         const pointer = this.input.mousePointer;
 
@@ -1367,10 +1459,12 @@ export class SceneMain extends Phaser.Scene {
         return { isDown: isDown, position: { x: pointer.x, y: pointer.y } };
     }
 
+    // プレーヤーがミスをしたかチェックする
     private _isMissed(): boolean {
         return this.missed;
     }
 
+    // クリアしたかチェックする
     private _isCleared(): boolean {
         let remainBits = 0;
         for (let i = 0; i < this.bits.length; i++) {
@@ -1390,6 +1484,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // タイムオーバーかチェックする
     private _isTimeOver(): boolean {
         if (Globals.get().getMode() === Consts.Game.Mode.TIMEATTACK) {
             //タイムアタックのときだけ判定する
@@ -1406,6 +1501,7 @@ export class SceneMain extends Phaser.Scene {
         }
     }
 
+    // 動きもの（プレーヤー、エネミー、エフェクト）を停止する
     private _AllStop(): void {
         const zero: Coord2 = { x: 0, y: 0 };
         //プレーヤー
@@ -1422,6 +1518,7 @@ export class SceneMain extends Phaser.Scene {
         this.effect?.setVisible(false);
     }
 
+    // 指定したIDの敵を取得する
     private _getEnemy(id: number | null): Enemy | null {
         if (id != null) {
             for (let i = 0; i < this.enemies.length; i++) {

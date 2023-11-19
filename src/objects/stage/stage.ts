@@ -1,9 +1,12 @@
 import { Assets, Consts } from "../../consts";
 import { Globals } from "../../globals";
 
+/**
+ * コンフィグ
+ */
 export type StageConfig = {
-    key: string,
-    bgm: string,
+    key: string,    // タイルマップのキー
+    bgm: string,    // BGMのキー
 
     // bit関連
     bit: {
@@ -17,27 +20,35 @@ export type StageConfig = {
 
     // 敵関連
     enemy: {
-        count: number,
-        spawnTime: number[],
-        stayTime: number,
-        respawnStayTime: number,
+        count: number,  // 出現数
+        spawnTime: number[],    // 出現時間
+        stayTime: number,   // 出現地点に留まる時間
+        respawnStayTime: number,    // リスポーン時に出現地点に留まる時間
     },
 
     // ギミック関連
     gimic: {
+        // 行動反転ギミック
         reverse: {
-            duration: number,
+            duration: number,   // 有効期間
         },
     },
 }
 
+/**
+ * タイルマップコンフィグ
+ */
 export type TileMapConfig = {
-    key: string,
-    tileset: string,
-    baseLayer: string,
-    transLayer: string,
+    key: string,    // タイルマップのキー
+    tileset: string,    // タイルセットのキー
+    baseLayer: string,  // ベースレイヤー
+    transLayer: string, // 透過レイヤー
 }
 
+/**
+ * ステージコンフィグ
+ * このあたりは外部ファイル化すべきだったか…
+ */
 const STAGES: StageConfig[] = [
     //stage1
     {
@@ -239,7 +250,11 @@ const STAGES: StageConfig[] = [
 
 ];
 
-
+/**
+ * 指定したインデックスのステージコンフィグを取得する
+ * @param index ステージインデックス(0-)
+ * @returns ステージコンフィグ
+ */
 export function getStageConfig(index: number): StageConfig {
 
     if (index >= STAGES.length) {
@@ -250,6 +265,11 @@ export function getStageConfig(index: number): StageConfig {
     return stage;
 }
 
+/**
+ * 指定したキーのタイルマップコンフィグを取得する
+ * @param key タイルマップのキー
+ * @returns タイルマップコンフィグ
+ */
 export function getTilemapConfig(key: string): TileMapConfig {
     const tilemaps = Assets.Tilemaps.filter(map => {
         if (map.KEY === key) { return true; }
@@ -272,6 +292,10 @@ export function getTilemapConfig(key: string): TileMapConfig {
     return map;
 }
 
+/**
+ * ステージ数を取得する
+ * @returns ステージ数
+ */
 export function getStageCount(): number {
     if (Globals.get().getMode() === Consts.Game.Mode.NOMAL) {
         return STAGES.length;

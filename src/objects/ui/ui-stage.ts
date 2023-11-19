@@ -1,20 +1,31 @@
 import { Globals } from "../../globals";
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type uiStageConfig = {
     text: {
-        position: Coord2;
-        origin: Coord2;
-        depth: number;
+        position: Coord2;   // 表示位置
+        origin: Coord2;     // 中心座標(0-1)
+        depth: number;      // 表示優先順位
     },
 }
 
+/**
+ * ステージ数UI
+ */
 export class uiStage {
     private scene: Phaser.Scene;
     private config: uiStageConfig;
     private stage: number;
     private text: Phaser.GameObjects.Text;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: uiStageConfig) {
         this.scene = scene;
         this.config = config;
@@ -34,6 +45,9 @@ export class uiStage {
         this._setText(this.stage);
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
         const stage = Globals.get().getStage();
         if (this.stage !== stage) {
@@ -42,6 +56,7 @@ export class uiStage {
         }
     }
 
+    // ステージ数を表示する
     private _setText(stage: number) {
         this.text.setText(`STAGE ${(stage + 1)}`);
     }

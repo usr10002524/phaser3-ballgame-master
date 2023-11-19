@@ -2,19 +2,25 @@
 import { Consts } from "../../consts";
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type TilemapConfig = {
-    stage: number;
+    stage: number;  // ステージ番号
 
-    key: string;
-    tilesetName: string;
-    tilesetKey: string;
+    key: string;    // タイルマップのキー
+    tilesetName: string;    // タイルセット名
+    tilesetKey: string; // タイルセットのキー
     layers: {
-        layerName: string,
-        depth: number,
+        layerName: string,  // レイヤー名
+        depth: number,  // 表示優先順位
     }[],
     //layerName: string;
 }
 
+/**
+ * タイルマップクラス
+ */
 export class Tilemap {
 
     private scene: Phaser.Scene;
@@ -25,6 +31,11 @@ export class Tilemap {
 
     private edge: Phaser.GameObjects.Rectangle[];
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: TilemapConfig) {
         this.scene = scene;
         this.config = config;
@@ -59,10 +70,18 @@ export class Tilemap {
         // this._createEdgeCollision();
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
 
     }
 
+    /**
+     * 指定したレイヤー名のタイルマップレイヤーを取得する
+     * @param layerName レイヤーの名前
+     * @returns タイルマップレイヤー
+     */
     getLayer(layerName: string): Phaser.Tilemaps.TilemapLayer | null {
         const layer = this.layers.get(layerName);
         if (layer != null) {
@@ -73,6 +92,13 @@ export class Tilemap {
         }
     }
 
+    /**
+     * 指定位置のオブジェクトを指定した種別のオブジェクトに置き換える
+     * @param layerName レイヤー名
+     * @param x X位置
+     * @param y Y位置
+     * @param kind 種別
+     */
     replace(layerName: string, x: number, y: number, kind: number) {
         const layer = this.getLayer(layerName);
         if (layer != null) {
@@ -81,6 +107,12 @@ export class Tilemap {
         }
     }
 
+    /**
+     * 指定位置がレイヤーの中かどうか判定する
+     * @param layerName レイヤー名
+     * @param position 位置
+     * @returns 指定位置がレイヤーの範囲内ならtrue、そうでない場合はfalseを返す。
+     */
     isInside(layerName: string, position: Coord2): boolean {
         const layer = this.getLayer(layerName);
         if (layer != null) {
@@ -96,11 +128,21 @@ export class Tilemap {
         }
     }
 
+    /**
+     * ステージ端のあたりを取得する
+     * @returns ステージ端のあたり
+     */
     getEdgeColliders(): Phaser.GameObjects.Rectangle[] {
         return this.edge;
     }
 
     //指定したタイルをタイルマップレイヤーから取得する
+    /**
+     * 指定したレイヤーにあるタイルを全て取得する
+     * @param layerName レイヤー名
+     * @param target 検索する対象のタイル
+     * @returns 検索対象に一致するタイルの配列
+     */
     getTilesFromTileLayer(layerName: string, target: number): Phaser.Tilemaps.Tile[] {
         const layer = this.getLayer(layerName);
         if (layer != null) {
@@ -115,6 +157,9 @@ export class Tilemap {
         }
     }
 
+    /**
+     * ステージ端のあたりを作成する
+     */
     private _createEdgeCollision(): void {
         const edgeWidth = 10;
         if (this.config.layers.length === 0) {

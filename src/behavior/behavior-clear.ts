@@ -2,6 +2,9 @@ import { Assets, Consts } from "../consts";
 import { SceneMain } from "../scene/scene-main";
 import { Behavior } from "./behavior";
 
+/**
+ * ステージクリア演出
+ */
 export class BehaviorClear extends Behavior {
 
     private scene: SceneMain;
@@ -11,6 +14,10 @@ export class BehaviorClear extends Behavior {
     private spacer: Phaser.Time.TimerEvent | null;
     private finished: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     */
     constructor(scene: SceneMain) {
         super('BehaviorClear');
         this.scene = scene;
@@ -40,13 +47,22 @@ export class BehaviorClear extends Behavior {
     }
 
     //extends Behavior
+    /**
+     * 初期化処理
+     */
     initialize(): void {
         this._clearInStart();
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
     }
 
+    /**
+     * 終了処理
+     */
     finalize(): void {
         if (this.tween != null) {
             this.tween.remove();
@@ -54,11 +70,15 @@ export class BehaviorClear extends Behavior {
         this.clear.destroy();
     }
 
+    /**
+     * ビヘイビア終了したかどうかを返す。
+     * @returns 終了していた場合は true、そうでない場合はfalseを返す。
+     */
     isFinished(): boolean {
         return this.finished;
     }
 
-
+    // 「Clear」の表示開始を行う
     private _clearInStart(): void {
         const start = 2.0;
         const end = 1.0;
@@ -89,6 +109,7 @@ export class BehaviorClear extends Behavior {
         });
     }
 
+    // 「Clear」の表示終了を行う
     private _clearOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -112,6 +133,7 @@ export class BehaviorClear extends Behavior {
         });
     }
 
+    // 演出が全て終了した際の処理
     private _onEnd(): void {
         this.scene.onNextStage();
         this.finished = true;

@@ -1,10 +1,28 @@
+/**
+ * ギミック管理
+ * 
+ * Gimic をimplements してギミックを実装する。
+ * インスタンスを作成し、GimicManager にaddする。
+ * その後、毎フレーム update() が呼ばれる。
+ * isGimicRemoved() が true が返すと、destroyGimic() が呼ばれる。
+ * ギミックは type で管理される。
+ * 同じ type は許容されるが、GimicManager に同じ type のギミックが複数存在した場合、
+ * get は最初に見つかったギミックを返すことに注意。 
+ */
+
 import { Consts } from "../../consts";
 
+/**
+ * コンフィグ
+ */
 export type GimicConfig = {
-    type: number;
-    manager: GimicManager,
+    type: number;   // ギミックタイプ
+    manager: GimicManager;  // ギミックマネージャ
 }
 
+/**
+ * ギミックインターフェース
+ */
 export interface Gimic {
 
     //ギミックタイプを取得する
@@ -35,18 +53,34 @@ export interface Gimic {
     destroyGimic(): void;
 }
 
+/**
+ * ギミックマネージャ
+ */
 export class GimicManager {
 
     private gimics: Gimic[];
 
+    /**
+     * コンストラクタ
+     */
     constructor() {
         this.gimics = [];
     }
 
+    /**
+     * ギミックを追加する
+     * @param gimic ギミック
+     */
     add(gimic: Gimic) {
         this.gimics.push(gimic);
     }
 
+    /**
+     * タイプを指定しギミックを取得する
+     * 同タイプのギミックが複数ある場合は、最初のものを返す。
+     * @param type 取得するギミックのタイプ
+     * @returns ギミック
+     */
     get(type: number): Gimic | null {
         //指定タイプのギミックを抽出
         const gimics: Gimic[] = this.gimics.filter(gimic => {
@@ -63,6 +97,9 @@ export class GimicManager {
         }
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
         let removes: Gimic[] = [];
 
@@ -85,6 +122,11 @@ export class GimicManager {
         });
     }
 
+    /**
+     * 指定したタイプのギミックが有効かどうかチェックする
+     * @param type ギミックタイプ
+     * @returns 指定したタイプのギミックが有効な場合はtrue、そうでない場合はfalseを返す。
+     */
     isActive(type: number): boolean {
 
         const gimics = this.gimics.filter(gimic => {
@@ -104,6 +146,9 @@ export class GimicManager {
         }
     }
 
+    /**
+     * 登録されているギミックをすべて破棄する
+     */
     clear(): void {
         this.gimics.forEach((child: Gimic) => {
             child.destroyGimic()

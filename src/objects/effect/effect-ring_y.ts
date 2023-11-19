@@ -2,14 +2,23 @@ import { Assets, Consts } from "../../consts";
 import { EffectRing, EffectConfig } from "./effect-ring";
 
 /**
- * リングエフェクトクラス
+ * リングエフェクト（黃）クラス
  */
 export class EffectRingYellow extends EffectRing {
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: EffectConfig) {
         super(scene, config);
     }
 
+    /**
+     * Imageオブジェクトを作成する
+     * @returns Imageオブジェクト
+     */
     protected _createImage(): Phaser.GameObjects.Image {
         const ring = this.scene.add.image(0, 0, Assets.Graphic.Effects.KEY);
         ring.setFrame(Assets.Graphic.Effects.RING);
@@ -21,6 +30,11 @@ export class EffectRingYellow extends EffectRing {
         return ring;
     }
 
+    /**
+     * Tweenオブジェクトを作成する
+     * @param parent Imageオブジェクト
+     * @returns Tweenオブジェクト
+     */
     protected _createTween(parent: Phaser.GameObjects.Image): Phaser.Tweens.Tween {
         const tween = this.scene.add.tween({
             targets: parent,

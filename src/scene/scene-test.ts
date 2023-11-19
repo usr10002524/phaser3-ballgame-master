@@ -2,6 +2,9 @@ import { Consts } from "../consts";
 import { EffectConfig } from "../objects/effect/effect-ring";
 import { EffectRingYellow } from "../objects/effect/effect-ring_y";
 
+/**
+ * テストシーン
+ */
 export class SceneTest extends Phaser.Scene {
 
     private timer: Phaser.Time.TimerEvent | null;

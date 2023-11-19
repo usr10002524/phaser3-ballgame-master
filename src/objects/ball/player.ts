@@ -5,22 +5,38 @@ import { getVector, normalizeVector, lengthBetweenPoint } from "../../service/ve
 import { SceneMain } from "../../scene/scene-main";
 import { Core } from "phaser";
 
+/**
+ * コンフィグ
+ */
 export type PlayerConfig = {
-    ballConfig: BallConfig;
-    speedValue: number;
-    speedMax: number;
-    reduceVerocity: number;
+    ballConfig: BallConfig; // 基底のコンフィグ
+    speedValue: number; // 速度初期値
+    speedMax: number;   // 速度最大値
+    reduceVerocity: number; // 加速度減衰率
 }
 
+/**
+ * プレーヤークラス
+ */
 export class Player extends Ball {
 
     private config: PlayerConfig;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: SceneMain, config: PlayerConfig) {
         super(scene, config.ballConfig);
         this.config = config;
     }
 
+    /**
+     * 加速度を更新する
+     * @param target 目標地点
+     * @param move 移動しているか
+     */
     updateVerocity(target: Coord2, move: boolean): void {
 
         if (move) {

@@ -13,97 +13,112 @@ export const Consts = {
     },
 
 
-
+    // ゲーム設定
     Game: {
-        LIFE: 2,
+        LIFE: 2,    // 残機
         TIME: (3 * 60 * 1000),  //3分
+        // ゲームモード
         Mode: {
-            NOMAL: 1,
-            TIMEATTACK: 2,
+            NOMAL: 1,   // 通常
+            TIMEATTACK: 2,  // タイムアタック
         },
         REDUCE_TIME: 10000, //タイムアタックでミスしたときに減る時間
     },
 
+    // 背景
     BG: {
-        DEPTH: 0,
+        DEPTH: 0,   // 表示優先度
     },
 
+    // タイルマップ
     Map: {
+        // ベースレイヤー
         Base: {
-            DEPTH: 0,
+            DEPTH: 0,   // 表示優先度
         },
+        // 透過レイヤー
         Trans: {
-            DEPTH: 1,
+            DEPTH: 1,   // 表示優先度
         },
     },
 
+    // プレーヤー
     Player: {
-        DEPTH: 2,
+        DEPTH: 2,   // 表示優先度
     },
 
+    // エネミー
     Enemy: {
-        DEPTH: 2,
+        DEPTH: 2,   // 表示優先度
 
+        // 敵の状態
         Stat: {
-            NONE: 0,
-            NORMAL: 1,
-            ESCAPE: 2,
-            STAY: 3,
-            OUT: 4,
-            POWERUP: 5,
+            NONE: 0,    // なし
+            NORMAL: 1,  // 通常
+            ESCAPE: 2,  // プレーヤーから逃げる
+            STAY: 3,    // スポーン地点に留まる
+            OUT: 4,     // スポーン地点から出る
+            POWERUP: 5, // 強化除隊
         },
 
-        SCORE: 100,
+        SCORE: 100, // 倒した際のベーススコア
 
-        SPWN_STAY_TIME: 1000,
-        RESPWN_STAY_TIME: 5000,
+        SPWN_STAY_TIME: 1000,   // スポーン地点に留まる時間
+        RESPWN_STAY_TIME: 5000, // リスポーン時に留まる時間
     },
 
+    // ビット
     Bit: {
+        // 通常
         Small: {
-            SCORE: 10
+            SCORE: 10   // 獲得時のスコア
         },
+        // パワービット
         Power: {
-            SCORE: 100,
+            SCORE: 100, // 獲得時のスコア
         },
     },
 
+    // エフェクト
     Effects: {
+        // 黃
         Ring: {
-            DEPTH: 1,
-            DURATION: 800,
-            COUNT: 3,
-            LOOPDELAY: 200,
-            SPAN: 200,
+            DEPTH: 1,       // 表示優先度
+            DURATION: 800,  // ループ時間
+            COUNT: 3,       // 表示する個数
+            LOOPDELAY: 200, // ループ時のディレイ時間
+            SPAN: 200,      // 生成感覚
         },
+        // 赤
         Ring_r: {
-            DEPTH: 3,
-            DURATION: 400,
-            COUNT: 1,
-            LOOPDELAY: 0,
-            SPAN: 100,
+            DEPTH: 3,       // 表示優先度
+            DURATION: 400,  // ループ時間
+            COUNT: 1,       // 表示する個数
+            LOOPDELAY: 0,   // ループ時のディレイ時間
+            SPAN: 100,      // 生成間隔
         },
     },
 
     //タイルセット各画像のインデックス
     Tiles: {
-        TILE: 1,
-        PLAYER_START: 2,
-        ENEMY_GOAL: 3,
-        PLAYER_GOAL: 4,
-        ENEMY_START: 5,
-        WALL: 6,
-        OBSTACLE: 7,
-        REVERSE: 8,
-        TRANS_WALL: 9,
+        TILE: 1,    // 通常タイル
+        PLAYER_START: 2,    // プレーヤーのスタート位置
+        ENEMY_GOAL: 3,  // 敵のゴール（未使用）
+        PLAYER_GOAL: 4, // プレーヤーのゴール
+        ENEMY_START: 5, // 敵のスタート地点
+        WALL: 6,        // 壁
+        OBSTACLE: 7,    // 障害物
+        REVERSE: 8,     // ギミック（リバース）
+        TRANS_WALL: 9,  // 透過壁（敵が通過可能な壁）
 
     },
 
     //ギミック
     Gimics: {
+        // タイプ
         Type: {
-            NONE: 0,
-            REVERSE: 1,
+            NONE: 0,    // なし
+            REVERSE: 1, // 行動反転
         },
     },
 
@@ -114,6 +129,15 @@ export const Consts = {
 
     //UI
     UI: {
+        /*  共通パラメータ
+            Position 表示位置(x:X座標、y:Y座標)
+            Origin  中心位置(0-1)(x:X中心位置、y:Y中心位置)
+            Scale   スケーリング(x:Xスケーリング、y:Yスケーリング)
+            Size    サイズ(x:横サイズ、y:縦サイズ)
+            DEPTH   表示優先度
+        */
+
+        // スコア
         Score: {
             Text: {
                 Position: {
@@ -126,6 +150,7 @@ export const Consts = {
                 },
                 DEPTH: 3,
             },
+            // 得点によって大きさを変えるしきい値
             Threshold: {
                 Small: {
                     VALUE: 100,
@@ -143,7 +168,9 @@ export const Consts = {
                 },
             },
         },
+        // 残機数
         Lives: {
+            // ボール部分
             Ball: {
                 Position: {
                     x: 730,
@@ -159,6 +186,7 @@ export const Consts = {
                 },
                 DEPTH: 3,
             },
+            // テキスト部分
             Text: {
                 Position: {
                     x: 750,
@@ -171,6 +199,7 @@ export const Consts = {
                 DEPTH: 3,
             },
         },
+        // ステージ数表示
         Stage: {
             Text: {
                 Position: {
@@ -184,7 +213,9 @@ export const Consts = {
                 DEPTH: 3,
             },
         },
+        // タイマーゲージ
         TimerGuage: {
+            // 枠
             Frame: {
                 Position: {
                     x: 15,
@@ -196,6 +227,7 @@ export const Consts = {
                 },
                 DEPTH: 4,
             },
+            // ゲージ
             Guage: {
                 Position: {
                     x: 20,
@@ -212,6 +244,7 @@ export const Consts = {
                 DEPTH: 2,
             },
         },
+        // シェード
         Shade: {
             Position: {
                 x: 15,
@@ -228,6 +261,7 @@ export const Consts = {
             DEPTH: 2,
         },
 
+        // 各種UI
         Ready: {
             DEPTH: 3,
         },
@@ -320,6 +354,9 @@ export const Consts = {
     },
 }
 
+/**
+ * アセット定義
+ */
 export const Assets = {
     BASE: 'assets/',
 

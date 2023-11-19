@@ -4,6 +4,9 @@ import { Behavior } from "./behavior";
 import { atsumaru_saveScoreBoard, atsumaru_displayScoreBoard } from "../atsumaru/atsumaru";
 import { Globals } from "../globals";
 
+/**
+ * 全ステージクリア演出
+ */
 export class BehaviorAllClear extends Behavior {
 
     private scene: SceneMain;
@@ -15,6 +18,10 @@ export class BehaviorAllClear extends Behavior {
     private spacer: Phaser.Time.TimerEvent | null;
     private finished: boolean;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     */
     constructor(scene: SceneMain) {
         super('BehaviorAllClear');
         this.scene = scene;
@@ -56,13 +63,22 @@ export class BehaviorAllClear extends Behavior {
     }
 
     //extends Behavior
+    /**
+     * 初期化
+     */
     initialize(): void {
         this._clearInStart();
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
     }
 
+    /**
+     * 終了処理
+     */
     finalize(): void {
         if (this.tween != null) {
             this.tween.remove();
@@ -70,11 +86,15 @@ export class BehaviorAllClear extends Behavior {
         this.clear.destroy();
     }
 
+    /**
+     * ビヘイビア終了したかどうかを返す。
+     * @returns 終了していた場合は true、そうでない場合はfalseを返す。
+     */
     isFinished(): boolean {
         return this.finished;
     }
 
-
+    // 「Clear」の表示開始を行う
     private _clearInStart(): void {
         const start = 2.0;
         const end = 1.0;
@@ -105,6 +125,7 @@ export class BehaviorAllClear extends Behavior {
         });
     }
 
+    // 「Clear」の表示終了を行う
     private _clearOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -128,6 +149,7 @@ export class BehaviorAllClear extends Behavior {
         });
     }
 
+    // 「Congratulations」の表示開始を行う。
     private _congraInStart(): void {
         const start = 0;
         const end = 1;
@@ -158,6 +180,7 @@ export class BehaviorAllClear extends Behavior {
         });
     }
 
+    // 「Congratulations」の表示終了を行う。
     private _congraOutStart(): void {
         const start = 1.0;
         const end = 0;
@@ -181,6 +204,7 @@ export class BehaviorAllClear extends Behavior {
         });
     }
 
+    // 演出が全て終了した際の処理
     private _onEnd(): void {
         this.scene.onDisplayScoreBoard();
         this.finished = true;

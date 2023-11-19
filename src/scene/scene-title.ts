@@ -3,7 +3,9 @@ import { SoundVolume, SoundVolumeConfig } from "../common/sound-volume";
 import { Assets, Consts } from "../consts";
 import { Globals } from "../globals";
 
-
+/**
+ * タイトルシーン
+ */
 export class SceneTitle extends Phaser.Scene {
 
     private bg: Phaser.GameObjects.Image | null;
@@ -14,6 +16,9 @@ export class SceneTitle extends Phaser.Scene {
     private bgm: Phaser.Sound.BaseSound | null;
     private soundVolume: SoundVolume | null;
 
+    /**
+     * コンストラクタ
+     */
     constructor() {
         super({ key: "Title" });
 
@@ -26,9 +31,15 @@ export class SceneTitle extends Phaser.Scene {
         this.soundVolume = null;
     }
 
+    /**
+     * ロード処理
+     */
     preload() {
     }
 
+    /**
+     * 初期化
+     */
     create() {
         this.cameras.main.setBackgroundColor(0x101010);
         Globals.get().reset();
@@ -44,9 +55,13 @@ export class SceneTitle extends Phaser.Scene {
         atsumaru_setScreenshoScene(this);
     }
 
+    /**
+     * 更新処理
+     */
     update(): void {
     }
 
+    // ボリュームの初期化
     private _initVolume(): void {
         if (atsumaru_isValid()) {
             //現在のボリュームを取得し設定
@@ -64,6 +79,7 @@ export class SceneTitle extends Phaser.Scene {
         }
     }
 
+    // サウンドボリュームUIの作成
     private _createSoundVolume(): void {
         const config: SoundVolumeConfig = {
             pos: {
@@ -144,7 +160,7 @@ export class SceneTitle extends Phaser.Scene {
         this.soundVolume = new SoundVolume(this, config);
     }
 
-
+    // 画像の作成
     private _createImage(): void {
         //背景
         {
@@ -219,6 +235,7 @@ export class SceneTitle extends Phaser.Scene {
         }
     }
 
+    // パネルの作成
     private _createPanel(): void {
 
         //パネル表示
@@ -248,6 +265,7 @@ export class SceneTitle extends Phaser.Scene {
         }
     }
 
+    // メインシーンへ遷移する
     private _onStart(mode: number) {
         Globals.get().setMode(mode);
         this.scene.start("Main");

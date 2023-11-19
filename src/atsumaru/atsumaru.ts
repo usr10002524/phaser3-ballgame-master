@@ -1,3 +1,7 @@
+/**
+ * AtsumaruAPI を使う際のラッパー
+ */
+
 import { AtsumaruApiError } from "@atsumaru/api-types";
 import { RPGAtsumaruApi } from "@atsumaru/api-types";
 import { Consts } from "../consts";

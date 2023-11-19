@@ -1,23 +1,33 @@
 import { Coord2 } from "../../types";
 
+/**
+ * コンフィグ
+ */
 export type uiShadeConfig = {
     shade: {
-        key: string;
-        frame: string;
-        position: Coord2;
-        scale: Coord2;
-        origin: Coord2;
-        depth: number;
+        key: string; // ファイルのキー
+        frame: string;  // 表示フレーム名
+        position: Coord2;   // 表示位置
+        scale: Coord2;  // スケーリング
+        origin: Coord2; // 中心座標(0-1)
+        depth: number;  // 表示優先順位
     },
 }
 
-
+/**
+ * シェードクラス
+ */
 export class uiShade {
 
     private scene: Phaser.Scene;
     private config: uiShadeConfig;
     private shade: Phaser.GameObjects.Image;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     * @param config コンフィグ
+     */
     constructor(scene: Phaser.Scene, config: uiShadeConfig) {
         this.scene = scene;
         this.config = config;

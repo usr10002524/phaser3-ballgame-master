@@ -2,6 +2,9 @@ import { Assets, Consts } from "../consts";
 import { SceneMain } from "../scene/scene-main";
 import { Behavior } from "./behavior"
 
+/**
+ * 「タイトルに戻る」表示の演出
+ */
 export class BehaviorReturnTile extends Behavior {
 
     private scene: SceneMain;
@@ -13,6 +16,10 @@ export class BehaviorReturnTile extends Behavior {
     private static offColor = 0x0000FF;
     private static onColor = 0x00FF7F;
 
+    /**
+     * コンストラクタ
+     * @param scene シーン
+     */
     constructor(scene: SceneMain) {
         super('BehaviorReturnTile');
         this.scene = scene;
@@ -59,19 +66,36 @@ export class BehaviorReturnTile extends Behavior {
         }
     }
 
+    /**
+    * 初期化処理
+    */
     initialize(): void {
     }
+
+    /**
+     * 更新処理
+     */
     update(): void {
     }
+
+    /**
+     * 終了処理
+     */
     finalize(): void {
         this.returnTitle.destroy();
         this.panel.destroy();
         this.shade.destroy();
     }
+
+    /**
+     * ビヘイビア終了したかどうかを返す。
+     * @returns 終了していた場合は true、そうでない場合はfalseを返す。
+     */
     isFinished(): boolean {
         return this.finished;
     }
 
+    // 演出が全て終了した際の処理
     private _onEnd(): void {
         this.scene.onGameEnd();
         this.finished = true;
